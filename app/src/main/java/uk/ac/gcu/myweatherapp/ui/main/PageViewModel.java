@@ -1,4 +1,4 @@
-package uk.ac.gcu.myweatherapp.ui.main;
+package uk.ac.gcu.tabs.ui.main;
 
 import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
