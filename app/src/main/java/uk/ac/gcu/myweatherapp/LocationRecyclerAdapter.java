@@ -2,12 +2,18 @@ package uk.ac.gcu.myweatherapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder> {
@@ -31,23 +37,18 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        List<Day> days;
         Location location = locationList.get(position);
         viewHolder.locationName.setText(location.name);
-        viewHolder.locationTemp.setText(location.id);
-//        viewHolder.brief.setText(location.days.get(0).getBrief());
-        viewHolder.position=position;
-        RetrieveXMLData getXML = new RetrieveXMLData(position,location.id);
-        getXML.execute();
-        days = getXML.getDays();
-//        getXML.onPostExecute(days);
-//        System.out.println("after post exec "+days.size());
-//        String res;
-//        System.out.println("\n\nzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n\n" + descriptions.size());
-//        if (descriptions.size() != 0){
-//            res = String.valueOf(descriptions.size());
-//        }
-
+        if(location.days.size()!=0){
+            viewHolder.locationDescription.setText(location.days.get(0).getBrief());
+        }
+        viewHolder.imgView.setImageDrawable(location.drawable);
+//        viewHolder.brief.setText(location.getIcon());
+        viewHolder.position = position;
+//        viewHolder.
+//        RetrieveXMLData getXML = new RetrieveXMLData(position,location.id);
+//        getXML.execute();
+//        days = getXML.getDays();
     }
 
 
@@ -58,16 +59,25 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView locationName;
-        TextView locationTemp;
+        TextView locationDescription;
         TextView brief;
+        Drawable dr;
+        ImageView imgView;
         int currentPosition;
         int position;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
-            locationTemp = (TextView) itemView.findViewById(R.id.locationTemp);
+            locationDescription = (TextView) itemView.findViewById(R.id.description);
             brief = (TextView) itemView.findViewById(R.id.brief);
+            View imgHolder = itemView.findViewById(R.id.icon_view_holder);
+            imgView = new ImageView(imgHolder.getContext());
+//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height/2);
+//            img.setLayoutParams(params);
+//            imgHolder.add
+//            imgHolder.addView(img);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,4 +88,6 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             });
         }
     }
+
+
 }

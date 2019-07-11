@@ -23,6 +23,11 @@ public class ActivityLocationList extends AppCompatActivity {
         final LinearLayoutManager locationsLayoutManager = new LinearLayoutManager(this);
         recyclerLocations.setLayoutManager(locationsLayoutManager);
         locationList = dm.locations;
+        for (Location loc:locationList) {
+            RetrieveXMLData getXML = new RetrieveXMLData(loc);
+            getXML.execute();
+//            days = getXML.getDays();
+        }
         recyclerAdapter = new LocationRecyclerAdapter(this,locationList);
         recyclerLocations.setAdapter(recyclerAdapter);
     }

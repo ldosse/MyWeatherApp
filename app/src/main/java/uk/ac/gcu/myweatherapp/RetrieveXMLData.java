@@ -1,5 +1,6 @@
 package uk.ac.gcu.myweatherapp;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -17,13 +18,22 @@ import java.util.Map;
 
 public class RetrieveXMLData extends AsyncTask {
     private static final String ns = null;
-    private final int position;
+//    private final
+    private int position;
     List<Day> days;
     String locationId;
+    Location location;
 
     public RetrieveXMLData(int position, String locationID) {
         this.locationId = locationID;
         this.position = position;
+        location = DataManager.getInstance().locations.get(position);
+    }
+    public RetrieveXMLData(Location location) {
+        this.location = location;
+        this.locationId = location.id;
+//        this.position = position;
+//        location = DataManager.getInstance().locations.get(position);
     }
 
     @Override
@@ -31,7 +41,7 @@ public class RetrieveXMLData extends AsyncTask {
         URL url = null;
         InputStream in = null;
         String t = "";
-        days = new ArrayList<>();
+        List<Day> daysList = new ArrayList<>();
         try {
             url = new URL("https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/"+ this.locationId);
             System.out.println("URL is " + url);
@@ -46,8 +56,29 @@ public class RetrieveXMLData extends AsyncTask {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
                     System.out.println("Start document");
                 } else if (eventType == XmlPullParser.START_TAG) {
-                    if (xpp.getName().equalsIgnoreCase("item")) {
-                        this.days.add(readItem(xpp));
+                    if (xpp.getName().equalsIgnoreCase("image")) {
+                        xpp.nextTag();
+                        if( xpp.getName() == "title"){
+                            System.out.println("Next tag image");
+                            String[] str = xpp.getText().split(",");
+                            this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
+                            this.location.setCountryCode(str[1].trim());
+                            xpp.nextTag();
+                        }
+                        if(xpp.getName() == "url"){
+                            String iconUrl = xpp.getText();
+                            this.location.setDrawable(LoadImageFromWebOperations(iconUrl));
+                            this.location.setIcon(iconUrl);
+
+                            xpp.nextTag();
+                        }
+//                        String title = readText(xpp);
+//                        readTitleTag(xpp);
+//                        this.days.add(readItem(xpp));
+                    }
+                    else if (xpp.getName().equalsIgnoreCase("item")) {
+//                        this.location.getDays().add(readItem(xpp));
+                        daysList.add(readItem(xpp));
                     }
                 }
                 eventType = xpp.next();
@@ -59,13 +90,24 @@ public class RetrieveXMLData extends AsyncTask {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        DataManager.getInstance().locations.get(position).days = this.days ;
+        this.location.setDays(daysList);
+//        DataManager.getInstance().locations.get(position).days = this.days ;
         System.out.println("End document");
-        for (Day d:this.days){
+        for (Day d:this.location.getDays()){
             System.out.println(d.getDescription());
         }
-        return this.days;
+        return this.location.getDays();
 
+    }
+
+//    private String processTitle(String string){
+//        String[] str = string.split(",");
+//        locationName = str[0].replace("BBC Weather - Forecast for","").trim();
+//        countryCode = str[1].trim();
+//        return "";
+//    }
+    private void readTitleTag(XmlPullParser parser) {
+        parser.getText();
     }
 
     List<Day> getDays(){
@@ -124,6 +166,16 @@ public class RetrieveXMLData extends AsyncTask {
             }
         }
         return day;
+    }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "BBC");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
