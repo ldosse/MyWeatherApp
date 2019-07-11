@@ -1,23 +1,13 @@
 package uk.ac.gcu.myweatherapp;
 
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder> {
@@ -45,7 +35,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         Location location = locationList.get(position);
         viewHolder.locationName.setText(location.name);
         viewHolder.locationTemp.setText(location.id);
-        viewHolder.temp.setText(location.days.get(0).description);
+//        viewHolder.brief.setText(location.days.get(0).getBrief());
+        viewHolder.position=position;
         RetrieveXMLData getXML = new RetrieveXMLData(position,location.id);
         getXML.execute();
         days = getXML.getDays();
@@ -68,15 +59,23 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView locationName;
         TextView locationTemp;
-        TextView temp;
+        TextView brief;
         int currentPosition;
+        int position;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
             locationTemp = (TextView) itemView.findViewById(R.id.locationTemp);
-            temp = (TextView) itemView.findViewById(R.id.temp);
-
+            brief = (TextView) itemView.findViewById(R.id.brief);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ActivityLocation.class);
+                    intent.putExtra("index", position);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }
