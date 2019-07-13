@@ -40,9 +40,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         Location location = locationList.get(position);
         viewHolder.locationName.setText(location.name);
         if(location.days.size()!=0){
-            viewHolder.locationDescription.setText(location.days.get(0).getBrief());
+//            viewHolder.locationDescription.setText(location.days.get(0).getBrief());
         }
-        viewHolder.imgView.setImageDrawable(location.drawable);
 //        viewHolder.brief.setText(location.getIcon());
         viewHolder.position = position;
 //        viewHolder.
@@ -59,24 +58,18 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView locationName;
-        TextView locationDescription;
+//        TextView locationDescription;
         TextView brief;
-        Drawable dr;
-        ImageView imgView;
         int currentPosition;
         int position;
+        TextView countryCode;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
-            locationDescription = (TextView) itemView.findViewById(R.id.description);
+//            locationDescription = (TextView) itemView.findViewById(R.id.description);
             brief = (TextView) itemView.findViewById(R.id.brief);
-            View imgHolder = itemView.findViewById(R.id.icon_view_holder);
-            imgView = new ImageView(imgHolder.getContext());
-//            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height/2);
-//            img.setLayoutParams(params);
-//            imgHolder.add
-//            imgHolder.addView(img);
+            countryCode = (TextView) itemView.findViewById(R.id.countryCode);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

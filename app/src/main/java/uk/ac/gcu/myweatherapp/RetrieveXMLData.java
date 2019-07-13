@@ -131,16 +131,25 @@ public class RetrieveXMLData extends AsyncTask {
                 String[] str = parser.nextText().split(",");
                 this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
                 this.location.setCountryCode(str[1].trim());
+                System.out.println("Country COde is "+this.location.countryCode);
 //                parser.nextTag();
             } else if (name.equalsIgnoreCase("url")) {
                 String iconUrl = parser.nextText();
                 this.location.setIcon(iconUrl);
-
                 parser.nextTag();
             }
         }
     }
 
 
-
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        System.out.println("POST EXECUTION");
+        for (Location loc:DataManager.getInstance().locations) {
+            for (Day d:loc.days) {
+                System.out.println(d.toString());
+            }
+        }
+    }
 }
