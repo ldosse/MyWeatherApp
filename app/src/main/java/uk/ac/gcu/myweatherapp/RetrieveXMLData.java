@@ -76,7 +76,7 @@ public class RetrieveXMLData extends AsyncTask {
         System.out.println("End document");
         System.out.println(this.location.name);
         for (Day d:this.location.getDays()){
-            System.out.println(d.getDescription());
+            System.out.println(d.getBrief());
         }
         return this.location.getDays();
 
@@ -89,7 +89,6 @@ public class RetrieveXMLData extends AsyncTask {
     private Day readItem(XmlPullParser parser) throws IOException, XmlPullParserException {
         Day day = new Day();
         String title = null;
-        Map<String, String> attributes;
         String link = null;
 
         parser.require(XmlPullParser.START_TAG, ns, "item");
@@ -103,21 +102,17 @@ public class RetrieveXMLData extends AsyncTask {
 //                TODO initialize next outside if statements
                 String next = parser.nextText();
                 int firstCol = next.indexOf(':');
-                day.setDay(next.substring(0, firstCol));
-                day.setBrief(next.substring(next.indexOf(':')+1,next.indexOf(',')));
+                day.setDay(next.substring(0, firstCol).trim());
+                day.setBrief(next.substring(next.indexOf(':')+1,next.indexOf(',')).trim());
             } else if (name.equals("description")) {
                 String next = parser.nextText();
                 List<String> description = Arrays.asList(next.split(","));
                 Map<String,String> map = new HashMap<>();
                     for (String att:description) {
                     String[] kv = att.split(":");
-                    map.put(kv[0],kv[1]);
+                    map.put(kv[0].trim(),kv[1].trim());
                 }
                  day.setDescription(map);
-            }
-//            TODO remove link
-            else if (name.equals("link")) {
-                day.setLink(parser.nextText());
             }
         }
         return day;

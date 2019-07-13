@@ -26,7 +26,7 @@ public class PageViewModel extends ViewModel {
         public String apply(Integer input) {
             System.out.println("mDesc check input "+input);
 //            return loc.getDays().get(input).getDescription();
-            return loc.getDays().get(input).getDescription();
+            return loc.getDays().get(input).toString();
         }
     });
 
