@@ -59,7 +59,9 @@ public class RetrieveXMLData extends AsyncTask {
                         readImage(xpp);
                     }
                     else if (xpp.getName().equalsIgnoreCase("item")) {
+                        System.out.println("tag "+xpp.getName());
                         daysList.add(readItem(xpp));
+                        System.out.println("first day "+daysList.get(0).description);
                     }
                 }
                 eventType = xpp.next();
@@ -104,19 +106,24 @@ public class RetrieveXMLData extends AsyncTask {
                 int firstCol = next.indexOf(':');
                 day.setDay(next.substring(0, firstCol).trim());
                 day.setBrief(next.substring(next.indexOf(':')+1,next.indexOf(',')).trim());
-            } else if (name.equals("description")) {
+            } else if (name.equalsIgnoreCase("description")) {
                 String next = parser.nextText();
-                List<String> description = Arrays.asList(next.split(","));
+                List<String> attributes = Arrays.asList(next.split(","));
                 Map<String,String> map = new HashMap<>();
-                    for (String att:description) {
+                for (String att:attributes) {
                     String[] kv = att.split(":");
-                    map.put(kv[0].trim(),kv[1].trim());
+                    map.put(kv[0],kv[1]);
                 }
-                 day.setDescription(map);
+                day.setDescription(map);
+            }
+//            TODO remove link
+            else if (name.equals("link")) {
+                day.setLink(parser.nextText());
             }
         }
         return day;
     }
+
 
     private void readImage(XmlPullParser parser) throws IOException, XmlPullParserException {
         parser.require(XmlPullParser.START_TAG, ns, "image");
@@ -136,7 +143,7 @@ public class RetrieveXMLData extends AsyncTask {
             } else if (name.equalsIgnoreCase("url")) {
                 String iconUrl = parser.nextText();
                 this.location.setIcon(iconUrl);
-                parser.nextTag();
+//                parser.nextTag();
             }
         }
     }
@@ -146,10 +153,12 @@ public class RetrieveXMLData extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         System.out.println("POST EXECUTION");
-        for (Location loc:DataManager.getInstance().locations) {
-            for (Day d:loc.days) {
+//        this.location.days.
+//        for (Location loc:DataManager.getInstance().locations) {
+        System.out.println(this.location.getDays().get(0).toString());
+            for (Day d:this.location.days) {
                 System.out.println(d.toString());
             }
-        }
+//        }
     }
 }

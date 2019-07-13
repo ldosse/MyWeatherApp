@@ -16,16 +16,6 @@ public class Location {
     String icon;
     String countryCode;
 
-    public Drawable getDrawable() {
-        return drawable;
-    }
-
-    public void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
-    }
-
-    Drawable drawable;
-
     public List<Day> getDays() {
         return days;
     }
@@ -50,15 +40,6 @@ public class Location {
 //    public void setTemp(String temp) {
 ////        this.temp = temp;
 //    }
-
-    public void updateData(){
-//        RetrieveXMLData xmlData = new RetrieveXMLData(id, position);
-//        RetrieveXMLData xmlData = new RetrieveXMLData(this.position, this.id);
-//        RetrieveXMLData getXML = new RetrieveXMLData(location.id,position);
-//        AsyncTask execute = xmlData.execute();
-//        System.out.println("THIS LOCATION link IIIS "+this.days.get(0).link);
-//        return true;
-    }
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
