@@ -52,19 +52,26 @@ public class PlaceholderFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
-        final TextView textView = root.findViewById(R.id.section_label);
+        final TextView textView = root.findViewById(R.id.brief);
         final TextView descTextView = root.findViewById(R.id.description);
-        final TextView linkTextView = root.findViewById(R.id.link);
+        final TextView temperatureTextView = root.findViewById(R.id.temperature);
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+                temperatureTextView.setText(s);
             }
         });
         pageViewModel.getDesc().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 descTextView.setText(s);
+//                linkTextView.setText("lllink");
+            }
+        });
+        pageViewModel.getBrief().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
 //                linkTextView.setText("lllink");
             }
         });

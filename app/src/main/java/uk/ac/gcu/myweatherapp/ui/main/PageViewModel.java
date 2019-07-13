@@ -17,7 +17,7 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            return loc.getDays().get(input).getDay();
+            return loc.getDays().get(input).getDescription().get("Minimum Temperature");
         }
     });
 
@@ -25,8 +25,16 @@ public class PageViewModel extends ViewModel {
         @Override
         public String apply(Integer input) {
             System.out.println("mDesc check input "+input);
+            return loc.getDays().get(input).getDescription().toString();
+//            return loc.getDays().get(input).;
+        }
+    });
+    private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
+        @Override
+        public String apply(Integer input) {
+            System.out.println("mDesc check input "+input);
 //            return loc.getDays().get(input).getDescription();
-            return loc.getDays().get(input).toString();
+            return loc.getDays().get(input).getBrief();
         }
     });
 
@@ -47,4 +55,6 @@ public class PageViewModel extends ViewModel {
     public LiveData<String> getDesc(){
         return mDesc;
     }
+
+    public LiveData<String> getBrief(){ return mBrief;}
 }

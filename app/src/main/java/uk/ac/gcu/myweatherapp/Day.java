@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Day{
+    public Map<String, String> getDescription() {
+        return description;
+    }
+
     Map<String, String> description;
     String link;
     String day;
