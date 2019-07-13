@@ -37,10 +37,14 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Location location = locationList.get(position);
+        RetrieveXMLData getXML = new RetrieveXMLData(this.locationList.get(position), viewHolder,this);
+        getXML.execute();
+        Location location = getXML.location;
+//        Location location = locationList.get(position);
         viewHolder.locationName.setText(location.name);
+        viewHolder.countryCode.setText(location.countryCode);
         if(location.days.size()!=0){
-//            viewHolder.locationDescription.setText(location.days.get(0).getBrief());
+            viewHolder.brief.setText(location.days.get(0).getBrief());
         }
 //        viewHolder.brief.setText(location.getIcon());
         viewHolder.position = position;
@@ -51,6 +55,14 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     }
 
 
+    public void callBackData(ViewHolder viewHolder,Location location){
+        viewHolder.locationName.setText(location.name);
+        viewHolder.brief.setText(location.days.get(0).getBrief());
+        viewHolder.countryCode.setText(location.countryCode);
+        viewHolder.minTemperature.setText(location.days.get(0).description.get("Minimum Temperature"));
+
+    }
+
     @Override
     public int getItemCount() {
         return locationList.size();
@@ -60,13 +72,14 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         TextView locationName;
 //        TextView locationDescription;
         TextView brief;
-        int currentPosition;
         int position;
         TextView countryCode;
+        TextView minTemperature;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
+            minTemperature = (TextView) itemView.findViewById(R.id.minTemperature);
 //            locationDescription = (TextView) itemView.findViewById(R.id.description);
             brief = (TextView) itemView.findViewById(R.id.brief);
             countryCode = (TextView) itemView.findViewById(R.id.countryCode);

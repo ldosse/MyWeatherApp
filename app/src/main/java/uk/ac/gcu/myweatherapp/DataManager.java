@@ -40,9 +40,4 @@ public class DataManager {
         locations.add(rabat);
     }
 
-//    private void updateData(){
-//        for (Location loc:locations ) {
-//            loc.updateData();
-//        }
-//    }
 }

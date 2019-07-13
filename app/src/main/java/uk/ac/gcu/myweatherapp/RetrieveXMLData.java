@@ -2,6 +2,9 @@ package uk.ac.gcu.myweatherapp;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Message;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -17,26 +20,31 @@ import java.util.List;
 import java.util.Map;
 
 public class RetrieveXMLData extends AsyncTask {
+    // Message data bundle key to save xml parsed result.
+    private static final String KEY_XML_PARSE_RESULT = "KEY_XML_PARSE_RESULT";
     private static final String ns = null;
     private int position;
     List<Day> days;
     String locationId;
     Location location;
-
+    LocationRecyclerAdapter activity;
+    LocationRecyclerAdapter.ViewHolder viewHolder;
     public RetrieveXMLData(int position, String locationID) {
         this.locationId = locationID;
         this.position = position;
         location = DataManager.getInstance().locations.get(position);
     }
-    public RetrieveXMLData(Location location) {
+    public RetrieveXMLData(Location location, LocationRecyclerAdapter.ViewHolder v, LocationRecyclerAdapter activity) {
         this.location = location;
         this.locationId = location.id;
+        viewHolder = v;
+        this.activity = activity;
 //        this.position = position;
 //        location = DataManager.getInstance().locations.get(position);
     }
 
     @Override
-    protected List<Day> doInBackground(Object[] objects) {
+    protected Location doInBackground(Object[] objects) {
         URL url = null;
         InputStream in = null;
         String t = "";
@@ -80,7 +88,7 @@ public class RetrieveXMLData extends AsyncTask {
         for (Day d:this.location.getDays()){
             System.out.println(d.getBrief());
         }
-        return this.location.getDays();
+        return this.location;
 
     }
 
@@ -152,13 +160,30 @@ public class RetrieveXMLData extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        System.out.println("POST EXECUTION");
+        activity.callBackData(viewHolder,location);
+    }
+
+
+    //    @Override
+//    protected void onPostExecute(Location location) {
+//        super.onPostExecute(location);
+//        System.out.println("POST EXECUTION");
+//        Message msg = new Message();
+//        msg.what = MESSAGE_SHOW_XML_PARSE_RESULT;
+
+        // Add error message in message object data.
+//        Bundle bundle = new Bundle();
+//        bundle.putString(KEY_XML_PARSE_RESULT, String.valueOf(location.position));
+//        msg.setData(bundle);
+
+        // Send message to activity ui update Handler.
+//        showParseResultHandler.sendMessage(msg);
 //        this.location.days.
 //        for (Location loc:DataManager.getInstance().locations) {
-        System.out.println(this.location.getDays().get(0).toString());
-            for (Day d:this.location.days) {
-                System.out.println(d.toString());
-            }
+//        System.out.println(this.location.getDays().get(0).toString());
+//            for (Day d:this.location.days) {
+//                System.out.println(d.toString());
+//            }
 //        }
-    }
+//    }
 }
