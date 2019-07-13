@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class RetrieveXMLData extends AsyncTask {
     private static final String ns = null;
-//    private final
     private int position;
     List<Day> days;
     String locationId;
@@ -57,27 +56,9 @@ public class RetrieveXMLData extends AsyncTask {
                     System.out.println("Start document");
                 } else if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equalsIgnoreCase("image")) {
-                        xpp.nextTag();
-                        if( xpp.getName() == "title"){
-                            System.out.println("Next tag image");
-                            String[] str = xpp.getText().split(",");
-                            this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
-                            this.location.setCountryCode(str[1].trim());
-                            xpp.nextTag();
-                        }
-                        if(xpp.getName() == "url"){
-                            String iconUrl = xpp.getText();
-                            this.location.setDrawable(LoadImageFromWebOperations(iconUrl));
-                            this.location.setIcon(iconUrl);
-
-                            xpp.nextTag();
-                        }
-//                        String title = readText(xpp);
-//                        readTitleTag(xpp);
-//                        this.days.add(readItem(xpp));
+                        readImage(xpp);
                     }
                     else if (xpp.getName().equalsIgnoreCase("item")) {
-//                        this.location.getDays().add(readItem(xpp));
                         daysList.add(readItem(xpp));
                     }
                 }
@@ -93,6 +74,7 @@ public class RetrieveXMLData extends AsyncTask {
         this.location.setDays(daysList);
 //        DataManager.getInstance().locations.get(position).days = this.days ;
         System.out.println("End document");
+        System.out.println(this.location.name);
         for (Day d:this.location.getDays()){
             System.out.println(d.getDescription());
         }
@@ -100,36 +82,9 @@ public class RetrieveXMLData extends AsyncTask {
 
     }
 
-//    private String processTitle(String string){
-//        String[] str = string.split(",");
-//        locationName = str[0].replace("BBC Weather - Forecast for","").trim();
-//        countryCode = str[1].trim();
-//        return "";
-//    }
-    private void readTitleTag(XmlPullParser parser) {
-        parser.getText();
-    }
-
     List<Day> getDays(){
         return days;
     }
-
-
-    // For the tags title and summary, extracts their text values.
-    private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
-        String result = "";
-        if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText();
-            parser.nextTag();
-        }
-        return result;
-    }
-
-    protected void onPostExecute(List<Day> o) {
-        super.onPostExecute(o);
-    }
-
-
 
     private Day readItem(XmlPullParser parser) throws IOException, XmlPullParserException {
         Day day = new Day();
@@ -168,14 +123,29 @@ public class RetrieveXMLData extends AsyncTask {
         return day;
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "BBC");
-            return d;
-        } catch (Exception e) {
-            return null;
+    private void readImage(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "image");
+
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals("title")) {
+                System.out.println("Next tag image");
+                String[] str = parser.nextText().split(",");
+                this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
+                this.location.setCountryCode(str[1].trim());
+//                parser.nextTag();
+            } else if (name.equalsIgnoreCase("url")) {
+                String iconUrl = parser.nextText();
+                this.location.setIcon(iconUrl);
+
+                parser.nextTag();
+            }
         }
     }
+
+
 
 }
