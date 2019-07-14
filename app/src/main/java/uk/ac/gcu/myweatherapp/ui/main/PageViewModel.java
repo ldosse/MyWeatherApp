@@ -26,15 +26,15 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mDesc = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("mDesc check input "+input);
-            return loc.getDays().get(input).getDescription().toString();
+            System.out.println("mDesc check input "+loc.getDays().get(input).toString());
+            return loc.getDays().get(input).toString();
 //            return loc.getDays().get(input).;
         }
     });
     private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("mDesc check input "+loc.getDays().get(input).getBrief());
+            System.out.println("brief check input "+loc.getDays().get(input).getBrief());
 //            return loc.getDays().get(input).getDescription();
             return loc.getDays().get(input).getBrief();
         }

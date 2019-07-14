@@ -64,6 +64,7 @@ public class PlaceholderFragment extends Fragment {
         pageViewModel.getDesc().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
+                System.out.println("On changed "+s);
                 descTextView.setText(s);
 //                linkTextView.setText("lllink");
             }
