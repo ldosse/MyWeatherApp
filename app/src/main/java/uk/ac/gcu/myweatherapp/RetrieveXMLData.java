@@ -120,7 +120,7 @@ public class RetrieveXMLData extends AsyncTask {
                 Map<String,String> map = new HashMap<>();
                 for (String att:attributes) {
                     String[] kv = att.split(":");
-                    map.put(kv[0],kv[1]);
+                    map.put(kv[0].trim(),kv[1].trim());
                 }
                 day.setDescription(map);
             }

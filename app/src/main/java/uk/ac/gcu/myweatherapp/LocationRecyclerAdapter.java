@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
+
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder> {
     private final Context context;
     public final List<Location> locationList;
@@ -86,11 +87,14 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         TextView countryCode;
         TextView minTemperature;
         ImageView imageView;
+        ImageView img;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
             minTemperature = (TextView) itemView.findViewById(R.id.minTemperature);
 //            locationDescription = (TextView) itemView.findViewById(R.id.description);
+            img = (ImageView) itemView.findViewById(R.id.country_image);
+            img.setImageResource(R.drawable.london);
             brief = (TextView) itemView.findViewById(R.id.brief);
             countryCode = (TextView) itemView.findViewById(R.id.countryCode);
             imageView = (ImageView) itemView.findViewById(R.id.image_view);

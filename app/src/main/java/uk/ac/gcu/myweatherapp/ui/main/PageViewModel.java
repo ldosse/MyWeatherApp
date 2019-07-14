@@ -17,6 +17,8 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
+            System.out.println("min temp: "+loc.getDays().get(input).getDescription().get("Minimum Temperature"));
+            System.out.println("min temp: "+loc.getDays().get(input).getDescription().keySet());
             return loc.getDays().get(input).getDescription().get("Minimum Temperature");
         }
     });
@@ -32,7 +34,7 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("mDesc check input "+input);
+            System.out.println("mDesc check input "+loc.getDays().get(input).getBrief());
 //            return loc.getDays().get(input).getDescription();
             return loc.getDays().get(input).getBrief();
         }
@@ -50,6 +52,7 @@ public class PageViewModel extends ViewModel {
 
     public void setLocation(int i){
         loc = DataManager.getInstance().locations.get(i);
+        System.out.println("from set location paview model "+loc.getCountryCode());
     }
 
     public LiveData<String> getDesc(){
