@@ -2,6 +2,7 @@ package uk.ac.gcu.myweatherapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +61,16 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         viewHolder.brief.setText(location.days.get(0).getBrief());
         viewHolder.countryCode.setText(location.countryCode);
         viewHolder.minTemperature.setText(location.days.get(0).description.get("Minimum Temperature"));
-
+        new DownloadIcon(viewHolder,this)
+                .execute(location.icon);
+    }
+    public void callBackImage(ViewHolder viewHolder, Bitmap result){
+//        viewHolder.locationName.setText(location.name);
+//        viewHolder.brief.setText(location.days.get(0).getBrief());
+        viewHolder.imageView.setImageBitmap(result);
+//        viewHolder.minTemperature.setText(location.days.get(0).description.get("Minimum Temperature"));
+//        new DownloadIcon(viewHolder.imageView)
+//                .execute(location.icon);
     }
 
     @Override
@@ -75,7 +85,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         int position;
         TextView countryCode;
         TextView minTemperature;
-
+        ImageView imageView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             locationName = (TextView) itemView.findViewById(R.id.locationName);
@@ -83,7 +93,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 //            locationDescription = (TextView) itemView.findViewById(R.id.description);
             brief = (TextView) itemView.findViewById(R.id.brief);
             countryCode = (TextView) itemView.findViewById(R.id.countryCode);
-
+            imageView = (ImageView) itemView.findViewById(R.id.image_view);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
