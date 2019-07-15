@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Map;
 
 import uk.ac.gcu.myweatherapp.R;
 
@@ -51,10 +55,38 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+//        private RecyclerView recyclerView;
+//        private RecyclerView.Adapter mAdapter;
+//        private RecyclerView.LayoutManager layoutManager;
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView brief = root.findViewById(R.id.brief);
         final TextView descTextView = root.findViewById(R.id.description);
         final TextView temperatureTextView = root.findViewById(R.id.temperature);
+        final RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.attributesRecyclerView);
+
+//        TODO: update this when working on pull up interaction
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+        // specify an adapter (see also next example)
+        final RecyclerView.Adapter[] mAdapter = new RecyclerView.Adapter[1];
+
+        pageViewModel.getAttributes().observe(this, new Observer<Map<String, String>>() {
+            @Override
+            public void onChanged(@Nullable Map<String, String> map) {
+                mAdapter[0] = new AttributesAdapter(map);
+                recyclerView.setAdapter(mAdapter[0]);
+
+            }
+        });
+
+
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {

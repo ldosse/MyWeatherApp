@@ -6,6 +6,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.ac.gcu.myweatherapp.DataManager;
 import uk.ac.gcu.myweatherapp.Location;
 
@@ -40,6 +43,13 @@ public class PageViewModel extends ViewModel {
         }
     });
 
+    private LiveData<Map<String,String>> attributes = Transformations.map(mIndex, new Function<Integer, Map<String,String>>() {
+        @Override
+        public Map<String,String> apply(Integer input) {
+            return loc.getDays().get(input).getDescription();
+        }
+    });
+//            loc.getDays().get(mIndex).getDescription();
 
     public void setIndex(int index) {
         mIndex.setValue(index);
@@ -60,4 +70,8 @@ public class PageViewModel extends ViewModel {
     }
 
     public LiveData<String> getBrief(){ return mBrief;}
+
+    public LiveData<Map<String,String>> getAttributes(){
+        return attributes;
+    }
 }
