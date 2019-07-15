@@ -2,19 +2,26 @@ package uk.ac.gcu.myweatherapp.ui.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Map;
 
+import uk.ac.gcu.myweatherapp.DownloadIcon;
 import uk.ac.gcu.myweatherapp.R;
 
 /**
@@ -60,10 +67,12 @@ public class PlaceholderFragment extends Fragment {
 //        private RecyclerView.LayoutManager layoutManager;
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView brief = root.findViewById(R.id.brief);
-        final TextView descTextView = root.findViewById(R.id.description);
+        ImageView icon = root.findViewById(R.id.iconImg);
+//        final TextView descTextView = root.findViewById(R.id.description);
         final TextView temperatureTextView = root.findViewById(R.id.temperature);
         final RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.attributesRecyclerView);
-
+        final String[] br = {""};
+        final Context c=getContext();
 //        TODO: update this when working on pull up interaction
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -87,27 +96,64 @@ public class PlaceholderFragment extends Fragment {
         });
 
 
+//        pageViewModel.getWeatherIcon().observe(this, new Observer<Object>(){
+//            @Override
+//            public void onChanged(@Nullable Object o) {
+//                icon.setImageBitmap((Bitmap) o);
+//            }
+//        });
+
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 temperatureTextView.setText(s);
             }
         });
-        pageViewModel.getDesc().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                System.out.println("On changed "+s);
-                descTextView.setText(s);
-//                linkTextView.setText("lllink");
-            }
-        });
+//        pageViewModel.getDesc().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                System.out.println("On changed "+s);
+//                descTextView.setText(s);
+////                linkTextView.setText("lllink");
+//            }
+//        });
         pageViewModel.getBrief().observe(this, new Observer<String>() {
+
             @Override
             public void onChanged(@Nullable String s) {
                 brief.setText(s);
+//                br[0] =s;
+//                int id = Resources.getSystem().getIdentifier(s,null,null);
+
 //                linkTextView.setText("lllink");
             }
         });
+        pageViewModel.getWeatherIcon().observe(this, new Observer<String>() {
+
+            @Override
+            public void onChanged(@Nullable String s) {
+                icon.setImageDrawable(getImage(c,s));
+            }
+        });
+
+//        while(getImage(getContext(),br[0])==null) {
+//            icon.setImageDrawable(getImage(getContext(), br[0]));
+//        }
+
+
         return root;
+    }
+
+    public static Drawable getImage(Context c, String ImageName) {
+        System.out.println("drawable "+ ImageName);
+
+        int name = c.getResources().getIdentifier(ImageName.toLowerCase().replaceAll("\\s",""),
+                "drawable",c.getPackageName());
+        if (name == 0){
+            name = c.getResources().getIdentifier("na","drawable",c.getPackageName());
+        }
+        return ContextCompat.getDrawable(c,name );
+//                getResources().getAssets()
+//                getDrawable(c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName()));
     }
 }

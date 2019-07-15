@@ -20,7 +20,10 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
-    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/'] 
+} }
 }
 
 dependencies {

@@ -5,11 +5,16 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import uk.ac.gcu.myweatherapp.DataManager;
+import uk.ac.gcu.myweatherapp.DownloadIcon;
 import uk.ac.gcu.myweatherapp.Location;
 
 public class PageViewModel extends ViewModel {
@@ -42,6 +47,14 @@ public class PageViewModel extends ViewModel {
             return loc.getDays().get(input).getBrief();
         }
     });
+    private LiveData<String> weatherIcon = Transformations.map(mIndex, new Function<Integer, String>() {
+        @Override
+        public String apply(Integer input) {
+            System.out.println("weather check input "+loc.getDays().get(input).getBrief());
+//            return loc.getDays().get(input).getDescription();
+            return loc.getDays().get(input).getBrief();
+        }
+    });
 
     private LiveData<Map<String,String>> attributes = Transformations.map(mIndex, new Function<Integer, Map<String,String>>() {
         @Override
@@ -50,6 +63,27 @@ public class PageViewModel extends ViewModel {
         }
     });
 //            loc.getDays().get(mIndex).getDescription();
+
+//    private LiveData<Object> weatherIcon = Transformations.map(mIndex, new Function<Integer, Object>() {
+//        @Override
+//        public Bitmap apply(Integer input) {
+//
+//        }
+//    });
+//    private LiveData<Object> weatherIcon = Transformations.map(mIndex, new Function<Integer, Object>() {
+//        @Override
+//        public Bitmap apply(Integer input) {
+//            String url = "static.bbci.co.uk/weather/0.3.203/images/icons/individual_57_icons/en_on_light_bg/";
+//            Integer num = DataManager.getInstance().iconsMap.get(loc.getDays().get(input).getBrief().toLowerCase());
+//            System.out.println("what is the number " + num);
+//            try {
+//                return new DownloadIcon().execute(url+num+".gif").get();
+//            } catch (ExecutionException | InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//    });
 
     public void setIndex(int index) {
         mIndex.setValue(index);
@@ -65,8 +99,14 @@ public class PageViewModel extends ViewModel {
         System.out.println("from set location paview model "+loc.getCountryCode());
     }
 
+
+
     public LiveData<String> getDesc(){
         return mDesc;
+    }
+
+    public LiveData<String> getWeatherIcon(){
+        return weatherIcon;
     }
 
     public LiveData<String> getBrief(){ return mBrief;}

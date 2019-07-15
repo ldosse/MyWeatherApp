@@ -24,11 +24,20 @@ public class DownloadIcon extends AsyncTask<String,Void,Bitmap> {
 //        Toast.makeText(getContext(), "Please wait, it may take a few minute...", Toast.LENGTH_SHORT).show();
     }
 
+    public DownloadIcon() {
+        activity = null;
+//        this.imageView = imageView;
+//        this.activity = activity;
+//        this.viewHolder = view;
+//        Toast.makeText(getContext(), "Please wait, it may take a few minute...", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected Bitmap doInBackground(String... urls) {
         String imageURL = urls[0];
         Bitmap bimage = null;
         try {
+            System.out.println("URL "+ imageURL);
             InputStream in = new java.net.URL(imageURL).openStream();
             bimage = BitmapFactory.decodeStream(in);
 
@@ -41,6 +50,9 @@ public class DownloadIcon extends AsyncTask<String,Void,Bitmap> {
 
     protected void onPostExecute(Bitmap result) {
 //        imageView.setImageBitmap(result);
-        activity.callBackImage(viewHolder,result);
+        if (activity != null)
+            activity.callBackImage(viewHolder,result);
+        else
+            System.out.println("ACTIVITY IS NULL");
     }
 }

@@ -15,6 +15,7 @@ public class Location {
     int position;
     String icon;
     String countryCode;
+    int img;
 
     public List<Day> getDays() {
         return days;
@@ -30,11 +31,12 @@ public class Location {
         this.position = pos++;
     }
 
-    public Location(String name, String id, int pos) {
+    public Location(String name, String id, int img) {
         this.name = name;
         this.id = id;
 //        this.temp=null;
-        this.position=pos;
+//        this.position=pos;
+        this.img=img;
     }
 //
 //    public void setTemp(String temp) {
@@ -67,5 +69,9 @@ public class Location {
 
     public void setDays(List<Day> days) {
         this.days = days;
+    }
+
+    public void setImg(int img){
+        this.img = img;
     }
 }

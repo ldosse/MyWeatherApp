@@ -3,18 +3,14 @@ package uk.ac.gcu.myweatherapp;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 
@@ -42,6 +38,7 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         RetrieveXMLData getXML = new RetrieveXMLData(this.locationList.get(position), viewHolder,this);
         getXML.execute();
         Location location = getXML.location;
+        viewHolder.img.setImageResource(location.img);
 //        Location location = locationList.get(position);
         viewHolder.locationName.setText(location.name);
         viewHolder.countryCode.setText(location.countryCode);
@@ -94,10 +91,11 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             minTemperature = (TextView) itemView.findViewById(R.id.minTemperature);
 //            locationDescription = (TextView) itemView.findViewById(R.id.description);
             img = (ImageView) itemView.findViewById(R.id.country_image);
-            img.setImageResource(R.drawable.london);
+//            img.setImageResource(R.drawable.london);
+//            img.setImageResource();
             brief = (TextView) itemView.findViewById(R.id.brief);
             countryCode = (TextView) itemView.findViewById(R.id.countryCode);
-            imageView = (ImageView) itemView.findViewById(R.id.image_view);
+            imageView = (ImageView) itemView.findViewById(R.id.iconImg);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

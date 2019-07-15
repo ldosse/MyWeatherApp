@@ -13,6 +13,16 @@ public class Day{
     String day;
     String brief;
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    String icon;
+
     public String toString() {
         if (this.description==null)
             return "";

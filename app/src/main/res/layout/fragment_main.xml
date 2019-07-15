@@ -11,8 +11,6 @@
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textAllCaps="false"
         android:textSize="36sp"
@@ -23,39 +21,37 @@
         android:id="@+id/brief"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperature" />
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="56dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/brief" />
+    <ImageView
+        android:id="@+id/iconImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:paddingBottom="80dp"
-        android:layout_marginBottom="80dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description">
+        app:layout_constraintTop_toBottomOf="@+id/brief">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/attributesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
             android:clipToPadding="false"
             android:paddingBottom="18dp"
-            android:layout_marginBottom="80dp"
             tools:listitem="@layout/item_attributes" />
     </LinearLayout>
 
