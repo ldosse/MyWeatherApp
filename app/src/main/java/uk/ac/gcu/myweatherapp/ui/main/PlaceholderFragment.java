@@ -68,7 +68,9 @@ public class PlaceholderFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView brief = root.findViewById(R.id.brief);
         ImageView icon = root.findViewById(R.id.iconImg);
-//        final TextView descTextView = root.findViewById(R.id.description);
+        final TextView hotView = root.findViewById(R.id.maxTemp);
+        final TextView windView = root.findViewById(R.id.wind);
+        final TextView humidityView = root.findViewById(R.id.humidity);
         final TextView temperatureTextView = root.findViewById(R.id.temperature);
         final RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.attributesRecyclerView);
         final String[] br = {""};
@@ -109,14 +111,26 @@ public class PlaceholderFragment extends Fragment {
                 temperatureTextView.setText(s);
             }
         });
-//        pageViewModel.getDesc().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                System.out.println("On changed "+s);
-//                descTextView.setText(s);
-////                linkTextView.setText("lllink");
-//            }
-//        });
+
+        pageViewModel.getWind().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                System.out.println("On changed "+s);
+                windView.setText(s);
+            }
+        });
+        pageViewModel.getHot().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                hotView.setText(s);
+            }
+        });
+        pageViewModel.getHumidity().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                humidityView.setText(s);
+            }
+        });
         pageViewModel.getBrief().observe(this, new Observer<String>() {
 
             @Override
@@ -136,11 +150,6 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
-//        while(getImage(getContext(),br[0])==null) {
-//            icon.setImageDrawable(getImage(getContext(), br[0]));
-//        }
-
-
         return root;
     }
 
@@ -153,7 +162,5 @@ public class PlaceholderFragment extends Fragment {
             name = c.getResources().getIdentifier("na","drawable",c.getPackageName());
         }
         return ContextCompat.getDrawable(c,name );
-//                getResources().getAssets()
-//                getDrawable(c.getResources().getIdentifier(ImageName, "drawable", c.getPackageName()));
     }
 }

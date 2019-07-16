@@ -31,12 +31,26 @@ public class PageViewModel extends ViewModel {
         }
     });
 
-    private LiveData<String> mDesc = Transformations.map(mIndex, new Function<Integer, String>() {
+    private LiveData<String> mHumidity = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("mDesc check input "+loc.getDays().get(input).toString());
-            return loc.getDays().get(input).toString();
+            System.out.println("Humidity check input "+loc.getDays().get(input).toString());
+            return loc.getDays().get(input).getDescription().get("Humidity");
 //            return loc.getDays().get(input).;
+        }
+    });
+
+    private LiveData<String> mWind = Transformations.map(mIndex, new Function<Integer, String>() {
+        @Override
+        public String apply(Integer input) {
+            return loc.getDays().get(input).getDescription().get("Wind Speed");
+        }
+    });
+
+    private LiveData<String> mHot = Transformations.map(mIndex, new Function<Integer, String>() {
+        @Override
+        public String apply(Integer input) {
+            return loc.getDays().get(input).getDescription().get("Maximum Temperature");
         }
     });
     private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
@@ -101,8 +115,14 @@ public class PageViewModel extends ViewModel {
 
 
 
-    public LiveData<String> getDesc(){
-        return mDesc;
+    public LiveData<String> getHumidity(){
+        return mHumidity;
+    }
+    public LiveData<String> getWind(){
+        return mWind;
+    }
+    public LiveData<String> getHot(){
+        return mHot;
     }
 
     public LiveData<String> getWeatherIcon(){
