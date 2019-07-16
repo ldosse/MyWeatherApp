@@ -9,6 +9,7 @@ public class DataManager {
     private static DataManager instance;
     public List<Location> locations;
     public Map<String,Integer> iconsMap;
+    public static int size;
 
     public static DataManager getInstance(){
         if(instance==null){
@@ -75,5 +76,15 @@ public class DataManager {
             this.iconsMap.put(s[i-1],i);
         }
     }
+
+    public int getNext(int position){
+        return (position+1) % this.locations.size();
+    }
+
+    public int getPrevious(int position){
+            if (position==0)
+                return this.locations.size()-1;
+            return (position-1) % this.locations.size();
+        }
 
 }
