@@ -1,9 +1,6 @@
 package uk.ac.gcu.myweatherapp;
 
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Message;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -18,6 +15,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import uk.ac.gcu.myweatherapp.Models.Day;
+import uk.ac.gcu.myweatherapp.Models.Location;
 
 public class RetrieveXMLData extends AsyncTask {
     // Message data bundle key to save xml parsed result.
@@ -36,7 +36,7 @@ public class RetrieveXMLData extends AsyncTask {
     }
     public RetrieveXMLData(Location location, LocationRecyclerAdapter.ViewHolder v, LocationRecyclerAdapter activity) {
         this.location = location;
-        this.locationId = location.id;
+        this.locationId = location.getId();
         viewHolder = v;
         this.activity = activity;
 //        this.position = position;
@@ -69,7 +69,7 @@ public class RetrieveXMLData extends AsyncTask {
                     else if (xpp.getName().equalsIgnoreCase("item")) {
                         System.out.println("tag "+xpp.getName());
                         daysList.add(readItem(xpp));
-                        System.out.println("first day "+daysList.get(0).description);
+                        System.out.println("first day "+daysList.get(0).getDescription());
                     }
                 }
                 eventType = xpp.next();
@@ -84,7 +84,7 @@ public class RetrieveXMLData extends AsyncTask {
         this.location.setDays(daysList);
 //        DataManager.getInstance().locations.get(position).days = this.days ;
         System.out.println("End document");
-        System.out.println(this.location.name);
+        System.out.println(this.location.getName());
         for (Day d:this.location.getDays()){
             System.out.println(d.getBrief());
         }
@@ -146,7 +146,7 @@ public class RetrieveXMLData extends AsyncTask {
                 String[] str = parser.nextText().split(",");
                 this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
                 this.location.setCountryCode(str[1].trim());
-                System.out.println("Country COde is "+this.location.countryCode);
+                System.out.println("Country COde is "+this.location.getCountryCode());
 //                parser.nextTag();
             } else if (name.equalsIgnoreCase("url")) {
                 String iconUrl = parser.nextText();
@@ -161,6 +161,7 @@ public class RetrieveXMLData extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         activity.callBackData(viewHolder,location);
+
     }
 
 

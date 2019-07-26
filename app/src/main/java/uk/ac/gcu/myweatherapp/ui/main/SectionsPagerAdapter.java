@@ -2,14 +2,12 @@ package uk.ac.gcu.myweatherapp.ui.main;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import uk.ac.gcu.myweatherapp.DataManager;
-import uk.ac.gcu.myweatherapp.Location;
-import uk.ac.gcu.myweatherapp.R;
+import uk.ac.gcu.myweatherapp.Models.Location;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

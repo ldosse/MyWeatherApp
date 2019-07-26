@@ -5,17 +5,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.v4.content.ContextCompat;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import uk.ac.gcu.myweatherapp.DataManager;
-import uk.ac.gcu.myweatherapp.DownloadIcon;
-import uk.ac.gcu.myweatherapp.Location;
+import uk.ac.gcu.myweatherapp.Models.Location;
 
 public class PageViewModel extends ViewModel {
 

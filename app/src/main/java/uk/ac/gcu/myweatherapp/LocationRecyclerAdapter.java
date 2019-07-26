@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.ac.gcu.myweatherapp.Models.Location;
+
 
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder> {
     private final Context context;
@@ -38,12 +40,12 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         RetrieveXMLData getXML = new RetrieveXMLData(this.locationList.get(position), viewHolder,this);
         getXML.execute();
         Location location = getXML.location;
-        viewHolder.img.setImageResource(location.img);
+        viewHolder.img.setImageResource(location.getCountryImg());
 //        Location location = locationList.get(position);
-        viewHolder.locationName.setText(location.name);
-        viewHolder.countryCode.setText(location.countryCode);
-        if(location.days.size()!=0){
-            viewHolder.brief.setText(location.days.get(0).getBrief());
+        viewHolder.locationName.setText(location.getName());
+        viewHolder.countryCode.setText(location.getCountryCode());
+        if(location.getDays().size()!=0){
+            viewHolder.brief.setText(location.getDays().get(0).getBrief());
         }
 //        viewHolder.brief.setText(location.getIcon());
         viewHolder.position = position;
@@ -55,12 +57,12 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
 
     public void callBackData(ViewHolder viewHolder,Location location){
-        viewHolder.locationName.setText(location.name);
-        viewHolder.brief.setText(location.days.get(0).getBrief());
-        viewHolder.countryCode.setText(location.countryCode);
-        viewHolder.minTemperature.setText(location.days.get(0).description.get("Minimum Temperature"));
+        viewHolder.locationName.setText(location.getName());
+        viewHolder.brief.setText(location.getDays().get(0).getBrief());
+        viewHolder.countryCode.setText(location.getCountryCode());
+        viewHolder.minTemperature.setText(location.getDays().get(0).getDescription().get("Minimum Temperature"));
         new DownloadIcon(viewHolder,this)
-                .execute(location.icon);
+                .execute(location.getIcon());
     }
     public void callBackImage(ViewHolder viewHolder, Bitmap result){
 //        viewHolder.locationName.setText(location.name);
@@ -91,8 +93,8 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
             minTemperature = (TextView) itemView.findViewById(R.id.minTemperature);
 //            locationDescription = (TextView) itemView.findViewById(R.id.description);
             img = (ImageView) itemView.findViewById(R.id.country_image);
-//            img.setImageResource(R.drawable.london);
-//            img.setImageResource();
+//            countryImg.setImageResource(R.drawable.london);
+//            countryImg.setImageResource();
             brief = (TextView) itemView.findViewById(R.id.brief);
             countryCode = (TextView) itemView.findViewById(R.id.countryCode);
             imageView = (ImageView) itemView.findViewById(R.id.iconImg);

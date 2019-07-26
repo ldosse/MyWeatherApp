@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import uk.ac.gcu.myweatherapp.Models.Location;
+
 public class DataManager {
     private static DataManager instance;
     public List<Location> locations;

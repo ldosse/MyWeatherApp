@@ -1,27 +1,28 @@
-package uk.ac.gcu.myweatherapp;
+package uk.ac.gcu.myweatherapp.Models;
 
-
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Location {
     static int pos=0;
-    String name;
-    String id;
-//    String temp;
+    private String name;
+    private String id;
     int position;
-    String icon;
-    String countryCode;
-    int img;
+    private String icon;
+    private String countryCode;
+    private List<Day> days = new ArrayList<>();
+
+    public int getCountryImg() {
+        return countryImg;
+    }
+
+    int countryImg;
 
     public List<Day> getDays() {
         return days;
     }
 
-    List<Day> days = new ArrayList<>();
 
     public Location(String name, String id) {
         this.name = name;
@@ -31,12 +32,12 @@ public class Location {
         this.position = pos++;
     }
 
-    public Location(String name, String id, int img) {
+    public Location(String name, String id, int countryImg) {
         this.name = name;
         this.id = id;
 //        this.temp=null;
 //        this.position=pos;
-        this.img=img;
+        this.countryImg = countryImg;
     }
 //
 //    public void setTemp(String temp) {
@@ -71,7 +72,15 @@ public class Location {
         this.days = days;
     }
 
-    public void setImg(int img){
-        this.img = img;
+    public void setCountryImg(int countryImg){
+        this.countryImg = countryImg;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -9,4 +9,6 @@
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>
     <color name="colorAccent">#c8e8ff</color>
+    <color name="transparent">#99FFFFFF</color>
+
 </resources>

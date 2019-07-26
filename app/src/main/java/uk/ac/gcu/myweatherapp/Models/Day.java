@@ -1,6 +1,5 @@
-package uk.ac.gcu.myweatherapp;
+package uk.ac.gcu.myweatherapp.Models;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Day{
@@ -8,10 +7,10 @@ public class Day{
         return description;
     }
 
-    Map<String, String> description;
-    String link;
-    String day;
-    String brief;
+    private Map<String, String> description;
+    private String link;
+    private String day;
+    private String brief;
 
     public String getIcon() {
         return icon;
