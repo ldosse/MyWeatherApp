@@ -19,8 +19,8 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mText = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("min temp: "+loc.getDays().get(input).getDescription().get("Minimum Temperature"));
-            System.out.println("min temp: "+loc.getDays().get(input).getDescription().keySet());
+//            System.out.println("min temp: "+loc.getDays().get(input).getDescription().get("Minimum Temperature"));
+//            System.out.println("min temp: "+loc.getDays().get(input).getDescription().keySet());
             return loc.getDays().get(input).getDescription().get("Minimum Temperature");
         }
     });
@@ -28,7 +28,7 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mHumidity = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("Humidity check input "+loc.getDays().get(input).toString());
+//            System.out.println("Humidity check input "+loc.getDays().get(input).toString());
             return loc.getDays().get(input).getDescription().get("Humidity");
 //            return loc.getDays().get(input).;
         }
@@ -50,7 +50,7 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("brief check input "+loc.getDays().get(input).getBrief());
+//            System.out.println("brief check input "+loc.getDays().get(input).getBrief());
 //            return loc.getDays().get(input).getDescription();
             return loc.getDays().get(input).getBrief();
         }
@@ -58,9 +58,12 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> weatherIcon = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            System.out.println("weather check input "+loc.getDays().get(input).getBrief());
+//            System.out.println("weather check input "+loc.getDays().get(input).getBrief());
 //            return loc.getDays().get(input).getDescription();
-            return loc.getDays().get(input).getBrief();
+            String d="";
+            if(loc.getDays().get(input).getDay().equalsIgnoreCase("tonight"))
+                d=" night";
+            return loc.getDays().get(input).getBrief().replace(" ","").toLowerCase()+d;
         }
     });
 
@@ -104,7 +107,7 @@ public class PageViewModel extends ViewModel {
 
     public void setLocation(int i){
         loc = DataManager.getInstance().locations.get(i);
-        System.out.println("from set location paview model "+loc.getCountryCode());
+//        System.out.println("from set location paview model "+loc.getCountryCode());
     }
 
 

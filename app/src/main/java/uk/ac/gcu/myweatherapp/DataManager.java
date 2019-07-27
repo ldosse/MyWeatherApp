@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import uk.ac.gcu.myweatherapp.Models.Location;
 
 public class DataManager {
     private static DataManager instance;
+    public static Boolean updated=false;
     public List<Location> locations;
     public Map<String,Integer> iconsMap;
     public static int size;
@@ -46,32 +48,33 @@ public class DataManager {
 
     public void createIconsMap(){
         this.iconsMap = new HashMap<>();
-        String[] s = {"sunny day",
+        String[] s = {
+                "sunny day",
                 "partly cloudy (night)",
                 "sunny intervals",
                 "white medium level cloud",
                 "black low level cloud",
                 "light rain shower (night)",
-                "light rain shower (day)",
+                "light rain shower",
                 "drizzle",
-                "light rain day or night",
+                "light rain",
                 "heavy rain shower (night)",
-                "heavy rain shower (day)",
+                "heavy rain shower",
                 "heavy rain",
                 "sleet shower (night)",
-                "sleet shower (day)",
+                "sleet shower",
                 "cloudy with sleet",
                 "hail shower (night)",
-                "hail shower (day)",
+                "hail shower",
                 "cloudy with hail",
                 "light snow shower (night)",
-                "light snow shower (day)",
+                "light snow shower",
                 "cloudy with light snow",
                 "heavy snow shower (night)",
-                "heavy snow shower (day)",
+                "heavy snow shower",
                 "cloudy with heavy snow",
                 "thundery shower (night)",
-                "thundery shower (day)",
+                "thundery shower",
                 "thunderstorms"};
 
         for(int i=1; i<s.length+1; i++){
@@ -87,6 +90,16 @@ public class DataManager {
             if (position==0)
                 return this.locations.size()-1;
             return (position-1) % this.locations.size();
+    }
+
+    public void updateData(){
+        System.out.println("updating data manager");
+        for(int i=0; i<this.locations.size(); i++){
+            RetrieveXMLData getXML = new RetrieveXMLData(i);
+            getXML.execute();
         }
+//        TODO REMOVE UPDATED=TRUE BECAUSE REDUNDANT CHECK FILE RETRIEVEXML POSTEXECUTE
+        updated=true;
+    }
 
 }

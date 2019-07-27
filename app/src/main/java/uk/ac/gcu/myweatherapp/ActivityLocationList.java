@@ -20,12 +20,13 @@ import uk.ac.gcu.myweatherapp.settings.SettingsActivity;
 public class ActivityLocationList extends AppCompatActivity {
     private List<Location> locationList;
     private LocationRecyclerAdapter recyclerAdapter;
-    DataManager dm = DataManager.getInstance();
+    DataManager dm;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_list);
         initializeDisplayContent();
+        dm = DataManager.getInstance();
 //        Toolbar toolbar = findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 
@@ -35,14 +36,14 @@ public class ActivityLocationList extends AppCompatActivity {
         final RecyclerView recyclerLocations = (RecyclerView) findViewById(R.id.RecyclerViewLocations);
         final LinearLayoutManager locationsLayoutManager = new LinearLayoutManager(this);
         recyclerLocations.setLayoutManager(locationsLayoutManager);
-        locationList = dm.locations;
+//        locationList = dm.locations;
 //        for (Location loc:dm.locations) {
 //            RetrieveXMLData getXML = new RetrieveXMLData(loc);
 //            getXML.execute();
 //            loc = getXML.location;
 ////            days = getXML.getDays();
 //        }
-        recyclerAdapter = new LocationRecyclerAdapter(this,locationList);
+        recyclerAdapter = new LocationRecyclerAdapter(this);
         recyclerLocations.setAdapter(recyclerAdapter);
         android.support.v7.preference.PreferenceManager
                 .setDefaultValues(this, R.xml.preferences, false);

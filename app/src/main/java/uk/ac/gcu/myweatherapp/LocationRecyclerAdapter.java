@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.ac.gcu.myweatherapp.Models.Location;
+import uk.ac.gcu.myweatherapp.ui.main.PlaceholderFragment;
 
 
 public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecyclerAdapter.ViewHolder> {
@@ -21,9 +22,9 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
     public final List<Location> locationList;
     private final LayoutInflater layoutInflater;
 
-    public LocationRecyclerAdapter(@NonNull Context context, List<Location> locations) {
+    public LocationRecyclerAdapter(@NonNull Context context) {
         this.context = context;
-        locationList = locations;
+        locationList = DataManager.getInstance().locations;
         layoutInflater = LayoutInflater.from(this.context);
     }
 
@@ -37,9 +38,15 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        RetrieveXMLData getXML = new RetrieveXMLData(this.locationList.get(position), viewHolder,this);
-        getXML.execute();
-        Location location = getXML.location;
+        Location location;
+        if(!DataManager.updated) {
+            RetrieveXMLData getXML = new RetrieveXMLData(position, viewHolder, this);
+            getXML.execute();
+            location = getXML.location;
+        }
+        else{
+            location=DataManager.getInstance().locations.get(position);
+        }
         viewHolder.img.setImageResource(location.getCountryImg());
 //        Location location = locationList.get(position);
         viewHolder.locationName.setText(location.getName());
@@ -64,10 +71,17 @@ public class LocationRecyclerAdapter extends RecyclerView.Adapter<LocationRecycl
         new DownloadIcon(viewHolder,this)
                 .execute(location.getIcon());
     }
-    public void callBackImage(ViewHolder viewHolder, Bitmap result){
+    public void callBackImage(ViewHolder viewHolder, Bitmap result) {
 //        viewHolder.locationName.setText(location.name);
 //        viewHolder.brief.setText(location.days.get(0).getBrief());
-        viewHolder.imageView.setImageBitmap(result);
+        if (result == null){
+            System.out.println("ERROR IMAGE");
+            viewHolder.imageView.setImageDrawable(
+                    PlaceholderFragment.getImage(context, viewHolder.brief.getText().toString()));
+        }
+        else{
+            viewHolder.imageView.setImageBitmap(result);
+        }
 //        viewHolder.minTemperature.setText(location.days.get(0).description.get("Minimum Temperature"));
 //        new DownloadIcon(viewHolder.imageView)
 //                .execute(location.icon);

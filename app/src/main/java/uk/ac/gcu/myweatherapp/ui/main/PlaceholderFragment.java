@@ -20,12 +20,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Map;
 
-import uk.ac.gcu.myweatherapp.ActivityLocation;
-import uk.ac.gcu.myweatherapp.DownloadIcon;
 import uk.ac.gcu.myweatherapp.R;
 import uk.ac.gcu.myweatherapp.utils.CommonGestureListener;
 
@@ -143,8 +139,8 @@ public class PlaceholderFragment extends Fragment {
             int lastAction;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                System.out.println("image view gestures: +++++++++++++++++++++++++++++++++++++++++++++++++++");
-                System.out.println(event.getAction());
+//                System.out.println("image view gestures: +++++++++++++++++++++++++++++++++++++++++++++++++++");
+//                System.out.println(event.getAction());
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
 //                        dX = v.getX() - event.getRawX();
@@ -163,7 +159,7 @@ public class PlaceholderFragment extends Fragment {
 
                     case MotionEvent.ACTION_UP:
                         if (lastAction == MotionEvent.ACTION_DOWN)
-                            System.out.println("ACTION DOWN");
+//                            System.out.println("ACTION DOWN");
 //                            Toast.makeText(PlaceholderFragment.this, "Clicked!", Toast.LENGTH_SHORT).show();
                         break;
 
@@ -221,7 +217,7 @@ public class PlaceholderFragment extends Fragment {
         pageViewModel.getWind().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                System.out.println("On changed "+s);
+//                System.out.println("On changed "+s);
                 windView.setText(s);
             }
         });
@@ -248,6 +244,7 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
                 icon.setImageDrawable(getImage(context,s));
+
             }
         });
 
@@ -255,14 +252,41 @@ public class PlaceholderFragment extends Fragment {
     }
 
     public static Drawable getImage(Context c, String ImageName) {
-        System.out.println("drawable "+ ImageName);
+//        System.out.println("drawable "+ ImageName);
+//        int c=0;
+//        while(c<2){
+//            int checkExistence = context.getResources().getIdentifier(s[0],
+//                    "drawable", context.getPackageName());
+//
+//            if ( checkExistence != 0 ) {  // the resource exists...
+//                icon.setImageDrawable(getImage(context,s[0]));
+//                return;
+//            }
+//            else {  // checkExistence == 0  // the resource does NOT exist!!
+//                if (s[1].equalsIgnoreCase("tonight")){
+//                    s[0] += " (night)";
+//                }
+//            }
+//            c++;
+//        }
+//        icon.setImageDrawable(getImage(context,"na"));
+        String imgName=ImageName.toLowerCase().replaceAll("\\s","");
+        int counter = 0;
+        int name;
+        while (counter<2){
+            System.out.println(imgName);
+//            name = c.getResources().getIdentifier(imgName,"drawable",c.getPackageName());
+            name = c.getResources().getIdentifier(imgName,"drawable",c.getPackageName());
+            if (name == 0){
+                imgName=ImageName.replaceAll("night","").trim();
+                System.out.println("REPLACE "+imgName);
 
-        int name = c.getResources().getIdentifier(ImageName.toLowerCase().replaceAll("\\s",""),
-                "drawable",c.getPackageName());
-        if (name == 0){
-            name = c.getResources().getIdentifier("na","drawable",c.getPackageName());
+            }else
+                return ContextCompat.getDrawable(c,name);
+            counter++;
+//                name = c.getResources().getIdentifier("na","drawable",c.getPackageName());
         }
-        return ContextCompat.getDrawable(c,name );
+        return ContextCompat.getDrawable(c,R.drawable.na);
     }
 
 

@@ -40,7 +40,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
 //        return mContext.getResources().getString(TAB_TITLES[position]);
         String day = location.getDays().get(position).getDay();
-        System.out.println(day);
+//        System.out.println(day);
         return day;
     }
 

@@ -37,7 +37,7 @@ public class DownloadIcon extends AsyncTask<String,Void,Bitmap> {
         String imageURL = urls[0];
         Bitmap bimage = null;
         try {
-            System.out.println("URL "+ imageURL);
+//            System.out.println("URL "+ imageURL);
             InputStream in = new java.net.URL(imageURL).openStream();
             bimage = BitmapFactory.decodeStream(in);
 
@@ -52,7 +52,7 @@ public class DownloadIcon extends AsyncTask<String,Void,Bitmap> {
 //        imageView.setImageBitmap(result);
         if (activity != null)
             activity.callBackImage(viewHolder,result);
-        else
-            System.out.println("ACTIVITY IS NULL");
+//        else
+//            System.out.println("ACTIVITY IS NULL");
     }
 }

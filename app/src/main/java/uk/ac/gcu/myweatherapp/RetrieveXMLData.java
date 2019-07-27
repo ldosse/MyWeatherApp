@@ -25,18 +25,18 @@ public class RetrieveXMLData extends AsyncTask {
     private static final String ns = null;
     private int position;
     List<Day> days;
-    String locationId;
+//    String locationId;
     Location location;
     LocationRecyclerAdapter activity;
     LocationRecyclerAdapter.ViewHolder viewHolder;
-    public RetrieveXMLData(int position, String locationID) {
-        this.locationId = locationID;
+    public RetrieveXMLData(int position) {
+//        this.locationId = locationID;
         this.position = position;
         location = DataManager.getInstance().locations.get(position);
     }
-    public RetrieveXMLData(Location location, LocationRecyclerAdapter.ViewHolder v, LocationRecyclerAdapter activity) {
-        this.location = location;
-        this.locationId = location.getId();
+    public RetrieveXMLData(int position, LocationRecyclerAdapter.ViewHolder v, LocationRecyclerAdapter activity) {
+        location = DataManager.getInstance().locations.get(position);
+//        this.locationId = location.getId();
         viewHolder = v;
         this.activity = activity;
 //        this.position = position;
@@ -50,8 +50,8 @@ public class RetrieveXMLData extends AsyncTask {
         String t = "";
         List<Day> daysList = new ArrayList<>();
         try {
-            url = new URL("https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/"+ this.locationId);
-            System.out.println("URL is " + url);
+            url = new URL("https://weather-broker-cdn.api.bbci.co.uk/en/forecast/rss/3day/"+ this.location.getId());
+//            System.out.println("URL is " + url);
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
@@ -61,15 +61,15 @@ public class RetrieveXMLData extends AsyncTask {
             eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
                 if (eventType == XmlPullParser.START_DOCUMENT) {
-                    System.out.println("Start document");
+//                    System.out.println("Start document");
                 } else if (eventType == XmlPullParser.START_TAG) {
                     if (xpp.getName().equalsIgnoreCase("image")) {
                         readImage(xpp);
                     }
                     else if (xpp.getName().equalsIgnoreCase("item")) {
-                        System.out.println("tag "+xpp.getName());
+//                        System.out.println("tag "+xpp.getName());
                         daysList.add(readItem(xpp));
-                        System.out.println("first day "+daysList.get(0).getDescription());
+//                        System.out.println("first day "+daysList.get(0).getDescription());
                     }
                 }
                 eventType = xpp.next();
@@ -83,10 +83,10 @@ public class RetrieveXMLData extends AsyncTask {
         }
         this.location.setDays(daysList);
 //        DataManager.getInstance().locations.get(position).days = this.days ;
-        System.out.println("End document");
-        System.out.println(this.location.getName());
+//        System.out.println("End document");
+//        System.out.println(this.location.getName());
         for (Day d:this.location.getDays()){
-            System.out.println(d.getBrief());
+//            System.out.println(d.getBrief());
         }
         return this.location;
 
@@ -142,11 +142,11 @@ public class RetrieveXMLData extends AsyncTask {
             }
             String name = parser.getName();
             if (name.equals("title")) {
-                System.out.println("Next tag image");
+//                System.out.println("Next tag image");
                 String[] str = parser.nextText().split(",");
                 this.location.setName(str[0].replace("BBC Weather - Forecast for","").trim());
                 this.location.setCountryCode(str[1].trim());
-                System.out.println("Country COde is "+this.location.getCountryCode());
+//                System.out.println("Country COde is "+this.location.getCountryCode());
 //                parser.nextTag();
             } else if (name.equalsIgnoreCase("url")) {
                 String iconUrl = parser.nextText();
@@ -161,6 +161,12 @@ public class RetrieveXMLData extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         activity.callBackData(viewHolder,location);
+        //TODO REMOVE SOUT STATEMENTS
+        System.out.println("DATA MANAGER");
+        System.out.println(DataManager.getInstance().locations.get(0).getDays());
+        if(position==DataManager.size-1){
+            DataManager.updated=true;
+        }
 
     }
 

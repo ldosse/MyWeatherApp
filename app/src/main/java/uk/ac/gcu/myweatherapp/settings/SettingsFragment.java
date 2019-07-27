@@ -15,9 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.zip.CheckedOutputStream;
 
 import uk.ac.gcu.myweatherapp.BackgroundTasks.AlarmReceiver;
+import uk.ac.gcu.myweatherapp.DataManager;
 import uk.ac.gcu.myweatherapp.R;
 
 import static android.support.v4.content.ContextCompat.getSystemService;
@@ -25,7 +27,7 @@ import static android.support.v4.content.ContextCompat.getSystemService;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private PendingIntent pendingIntent;
-    private AlarmManager manager;
+    private AlarmManager alarmManager;
     private Context context;
     private SwitchPreferenceCompat switchButton;
 
@@ -41,11 +43,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void startAlarm(View view) {
-        manager = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
-        int interval = 10000;
+        // every day at 9 am
+        Calendar calendar = Calendar.getInstance();
 
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-        Toast.makeText(this.getContext(), "Alarm Set", Toast.LENGTH_SHORT).show();
+        // if it's after or equal 9 am schedule for next day
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 9) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1); // add, not set!
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 30);
+        calendar.set(Calendar.SECOND, 40);
+
+        alarmManager = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
+//        int interval = 10000;
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+//        manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+        Toast.makeText(this.getContext(), "Alarm Set"+ DataManager.updated, Toast.LENGTH_SHORT).show();
     }
 
     public void setUpdates(View view){
