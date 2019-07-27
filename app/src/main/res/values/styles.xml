@@ -1,8 +1,7 @@
 <resources>
 
-    <style name="MyMaterialTheme" parent="AppTheme">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-    </style>
+    <!--<style name="AppTheme." parent="AppTheme">-->
+    <!--</style>-->
 
     <!--<style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">-->
         <!--<item name="windowNoTitle">true</item>-->
@@ -23,6 +22,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <!--<item name="windowActionBar">false</item>-->
         <!--<item name="windowNoTitle">true</item>-->
     </style>
