@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import uk.ac.gcu.myweatherapp.DataManager;
+import uk.ac.gcu.myweatherapp.Models.Day;
 import uk.ac.gcu.myweatherapp.Models.Location;
 
 /**
@@ -16,7 +17,8 @@ import uk.ac.gcu.myweatherapp.Models.Location;
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 //    @StringRes
-//    private static final int[] TAB_TITLES = new int[]{R.string.tab_title_1, R.string.tab_title_2,R.string.tab_title_3};
+    private static String[] TAB_TITLES;
+//    = new int[]{R.string.tab_title_1, R.string.tab_title_2,R.string.tab_title_3};
     private final Context mContext;
     private Location location;
     private int locIndex;
@@ -46,6 +48,15 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return location.getDays().size();
+        return 3;
+    }
+
+    public String[] setTabTitles(){
+        String[] tabs = new String[3];
+        int i =0;
+        for (Day day:location.getDays() ) {
+            tabs[i++] = day.getDay();
+        }
+        return tabs;
     }
 }

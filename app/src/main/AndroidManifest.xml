@@ -33,7 +33,8 @@
         </activity>
         <receiver
             android:name=".BackgroundTasks.AlarmReceiver"
-            android:process=":remote" >
+            android:process=":remote"
+            >
         </receiver>
         <service
             android:name=".Services.UpdateService"

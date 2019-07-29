@@ -7,11 +7,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.Map;
 
+import uk.ac.gcu.myweatherapp.ActivityLocation;
 import uk.ac.gcu.myweatherapp.R;
 import uk.ac.gcu.myweatherapp.utils.CommonGestureListener;
 
@@ -35,6 +38,7 @@ public class PlaceholderFragment extends Fragment {
     private static int i;
     private PageViewModel pageViewModel;
     private GestureDetectorCompat imageViewGestureDetectorCompat = null;
+    private View root;
 
     public static PlaceholderFragment newInstance(int index,int locationIndex) {
         PlaceholderFragment fragment = new PlaceholderFragment();
@@ -50,7 +54,7 @@ public class PlaceholderFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
-        int index = 1;
+        int index = 0;
 //        int locIndex = 0;
         if (getArguments() != null) {
             index = getArguments().getInt(ARG_SECTION_NUMBER);
@@ -64,7 +68,7 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_main, container, false);
+        root = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView brief = root.findViewById(R.id.brief);
         ImageView icon = root.findViewById(R.id.iconImg);
         final TextView hotView = root.findViewById(R.id.maxTemp);
@@ -74,9 +78,25 @@ public class PlaceholderFragment extends Fragment {
         final RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.attributesRecyclerView);
         final String[] br = {""};
         final Context context=getContext();
-        ImageView moreIcon = (ImageView) root.findViewById(R.id.moreIcon);
-        LinearLayout ll = (LinearLayout) root.findViewById(R.id.linearLayout2);
+        final TextView date = root.findViewById(R.id.date);
+        if(getArguments().getInt(ARG_SECTION_NUMBER)==0){
+            date.setText(pageViewModel.getPubDate());
+        }
 
+
+        ImageView moreIcon = (ImageView) root.findViewById(R.id.moreIcon);
+//        recyclerView.setMinimumHeight((int) ();
+        int viewPagerHeight = root.getHeight();
+        final LinearLayout constraintLayout = root.findViewById(R.id.attributesCL);
+//        System.out.println("height of CL "+ root.findViewById(R.id.attributesCL).getHeight() );
+//        System.out.println("height of root "+ root.getHeight() );
+//        recyclerView.setMinimumHeight((int) (viewPagerHeight-moreIcon.getY()));
+
+//        recyclerView.setNestedScrollingEnabled(false);
+//        recyclerView.setFastScrollEnabled(true);
+
+//        LinearLayout ll = (LinearLayout) root.findViewById(R.id.linearLayout2);
+//        ll.setAlpha(1);
         if(this.imageViewGestureDetectorCompat==null)
         {
             // Create custom gesture listener.
@@ -133,27 +153,39 @@ public class PlaceholderFragment extends Fragment {
 //            }
 //
 //        });
-        ll.setOnTouchListener(new View.OnTouchListener() {
+
+        moreIcon.setOnTouchListener(new View.OnTouchListener() {
             float dX;
             float dY;
+            float new_dY;
             int lastAction;
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                float iconPos = moreIcon.getY();
+                float cLPos = root.findViewById(R.id.attributesCL).getY();
 //                System.out.println("image view gestures: +++++++++++++++++++++++++++++++++++++++++++++++++++");
 //                System.out.println(event.getAction());
+                new_dY = event.getRawY();
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
 //                        dX = v.getX() - event.getRawX();
                         dY = v.getY() - event.getRawY();
+//                        new_dY=-event.getY()+event.getRawY();
                         lastAction = MotionEvent.ACTION_DOWN;
                         break;
 
                     case MotionEvent.ACTION_MOVE:
-                        v.setY(event.getRawY() + dY);
-//                        Float newHeight = params.height+dY;
-//                        ll.setLayoutParams(new LinearLayout.LayoutParams(ll.getLayoutParams().width, ll.getHeight()));
-//                        ll.setLayoutParams(new LinearLayout.LayoutParams(params.width,newHeight));
-//                        v.setX(event.getRawX() + dX);
+                        if(cLPos+event.getY() > -12)
+                        root.findViewById(R.id.attributesCL).setY(cLPos+event.getY());
+                        System.out.println("BEFORE height of CL "+ root.findViewById(R.id.attributesCL).getHeight() );
+
+                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) constraintLayout.getLayoutParams();
+                        params.height = (int) (root.getHeight()-constraintLayout.getY());
+                        constraintLayout.setLayoutParams(params);
+                        System.out.println("AFTER height of CL "+ root.findViewById(R.id.attributesCL).getHeight() );
+                        System.out.println("height of root "+ root.getHeight() );
+                        System.out.println("y of cl "+ root.findViewById(R.id.attributesCL).getY());
                         lastAction = MotionEvent.ACTION_MOVE;
                         break;
 
@@ -187,7 +219,7 @@ public class PlaceholderFragment extends Fragment {
 //        TODO: update this when working on pull up interaction
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(false);
 
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -210,7 +242,7 @@ public class PlaceholderFragment extends Fragment {
         pageViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                temperatureTextView.setText(s);
+                temperatureTextView.setText(s.split("C")[0]);
             }
         });
 
@@ -218,19 +250,30 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public void onChanged(@Nullable String s) {
 //                System.out.println("On changed "+s);
-                windView.setText(s);
+                windView.setText("    "+s);
             }
         });
-        pageViewModel.getHot().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                hotView.setText(s);
-            }
-        });
+        ActivityLocation activityLocation = (ActivityLocation) getActivity();
+        String loc = activityLocation.getLocation().getDays().get(0).getDay();
+        if(!loc.equalsIgnoreCase("tonight")){
+            pageViewModel.getHot().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(@Nullable String s) {
+                    hotView.setText("     "+s.split("C")[0]);
+                }
+            });
+        }else{
+            hotView.setVisibility(View.GONE);
+        }
+//        try{
+//
+//        catch (NullPointerException e){
+//            hotView.setVisibility(View.GONE);
+//        }
         pageViewModel.getHumidity().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                humidityView.setText(s);
+                humidityView.setText("     "+s);
             }
         });
         pageViewModel.getBrief().observe(this, new Observer<String>() {
@@ -248,8 +291,10 @@ public class PlaceholderFragment extends Fragment {
             }
         });
 
+
         return root;
     }
+
 
     public static Drawable getImage(Context c, String ImageName) {
 //        System.out.println("drawable "+ ImageName);

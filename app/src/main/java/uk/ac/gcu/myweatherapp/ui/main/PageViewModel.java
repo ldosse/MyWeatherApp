@@ -44,7 +44,9 @@ public class PageViewModel extends ViewModel {
     private LiveData<String> mHot = Transformations.map(mIndex, new Function<Integer, String>() {
         @Override
         public String apply(Integer input) {
-            return loc.getDays().get(input).getDescription().get("Maximum Temperature");
+            if (loc.getDays().get(input).getDay()!= "tonight")
+                return loc.getDays().get(input).getDescription().get("Maximum Temperature");
+            return "";
         }
     });
     private LiveData<String> mBrief = Transformations.map(mIndex, new Function<Integer, String>() {
@@ -73,28 +75,6 @@ public class PageViewModel extends ViewModel {
             return loc.getDays().get(input).getDescription();
         }
     });
-//            loc.getDays().get(mIndex).getDescription();
-
-//    private LiveData<Object> weatherIcon = Transformations.map(mIndex, new Function<Integer, Object>() {
-//        @Override
-//        public Bitmap apply(Integer input) {
-//
-//        }
-//    });
-//    private LiveData<Object> weatherIcon = Transformations.map(mIndex, new Function<Integer, Object>() {
-//        @Override
-//        public Bitmap apply(Integer input) {
-//            String url = "static.bbci.co.uk/weather/0.3.203/images/icons/individual_57_icons/en_on_light_bg/";
-//            Integer num = DataManager.getInstance().iconsMap.get(loc.getDays().get(input).getBrief().toLowerCase());
-//            System.out.println("what is the number " + num);
-//            try {
-//                return new DownloadIcon().execute(url+num+".gif").get();
-//            } catch (ExecutionException | InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//    });
 
     public void setIndex(int index) {
         mIndex.setValue(index);
@@ -110,6 +90,7 @@ public class PageViewModel extends ViewModel {
 //        System.out.println("from set location paview model "+loc.getCountryCode());
     }
 
+    public String getPubDate(){return loc.getPubDate();}
 
 
     public LiveData<String> getHumidity(){

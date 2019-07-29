@@ -15,6 +15,10 @@ import uk.ac.gcu.myweatherapp.Models.Location;
 import uk.ac.gcu.myweatherapp.ui.main.SectionsPagerAdapter;
 
 public class ActivityLocation extends AppCompatActivity {
+    public Location getLocation() {
+        return location;
+    }
+
     Location location;
     Context context;
     LinearLayout ll;
@@ -52,7 +56,7 @@ public class ActivityLocation extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
-        nextFAB.setAlpha(0.2f);
+//        nextFAB.setAlpha(0.2f);
 
         FloatingActionButton previousFAB = findViewById(R.id.previousFAB);
 
@@ -64,7 +68,8 @@ public class ActivityLocation extends AppCompatActivity {
                 context.startActivity(intent);
             }
         });
-        previousFAB.setAlpha(0.1f);
+//        previousFAB.setAlpha(0.1f);
+
 
     }
 

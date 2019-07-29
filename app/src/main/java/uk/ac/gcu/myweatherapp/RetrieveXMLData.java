@@ -123,9 +123,13 @@ public class RetrieveXMLData extends AsyncTask {
                     map.put(kv[0].trim(),kv[1].trim());
                 }
                 day.setDescription(map);
+            }else if(name.equalsIgnoreCase("pubDate")){
+                String pubDate = parser.nextText();
+                // removes time and timezone
+                this.location.setPubDate(pubDate.substring(0,16).trim());
             }
 //            TODO remove link
-            else if (name.equals("link")) {
+            else if (name.equalsIgnoreCase("link")) {
                 day.setLink(parser.nextText());
             }
         }
@@ -160,9 +164,10 @@ public class RetrieveXMLData extends AsyncTask {
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
-        activity.callBackData(viewHolder,location);
+        if (activity!=null)
+            activity.callBackData(viewHolder,location);
         //TODO REMOVE SOUT STATEMENTS
-        System.out.println("DATA MANAGER");
+//        System.out.println("DATA MANAGER");
         System.out.println(DataManager.getInstance().locations.get(0).getDays());
         if(position==DataManager.size-1){
             DataManager.updated=true;

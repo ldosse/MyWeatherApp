@@ -15,11 +15,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent i = new Intent(context, UpdateService.class);
-        i.putExtra("update service", "true");
+        i.putExtra("updateService", "true");
         context.startService(i);
-        System.out.println("I am receiving");
         DataManager.getInstance().updateData();
-        Toast.makeText(context, "I'm running "+DataManager.updated, Toast.LENGTH_SHORT).show();
+        boolean done = DataManager.updated;
+        String feedback = done? "success":"Error";
+        Toast.makeText(context, " My Weather App - fetching data - "+feedback, Toast.LENGTH_SHORT).show();
     }
 
 

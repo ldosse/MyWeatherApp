@@ -13,6 +13,16 @@ public class Location {
     private String countryCode;
     private List<Day> days = new ArrayList<>();
 
+    public String getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
+    }
+
+    private String pubDate;
+
     public int getCountryImg() {
         return countryImg;
     }
